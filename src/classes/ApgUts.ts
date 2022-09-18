@@ -718,7 +718,7 @@ export class ApgUtsServer {
         console.log(ApgUtsStr.FilledCentered(info.subtitle, 80, "|", " "))
         console.log(ApgUtsStr.FilledCentered(`${now} (ISO)`, 80, "|", " "))
         console.log(ApgUtsStr.FilledCentered(`http://localhost:${info.localPort}`, 80, "|", " "))
-        console.log(ApgUtsStr.FilledCentered(`Drash Server ready to receive request`, 80, "|", " "))
+        console.log(ApgUtsStr.FilledCentered(`Drash Server ready to receive requests`, 80, "|", " "))
         console.log(ApgUtsStr.FilledCentered('', 80, "+", "-"))
         console.log(`\n\n\n`)
     }
