@@ -1,0 +1,63 @@
+// deno-lint-ignore-file no-explicit-any
+/** -----------------------------------------------------------------------
+ * @module [Uts]
+ * @author [APG] ANGELI Paolo Giusto
+ * @version 0.2.0 [APG 2018/06/02]
+ * @version 0.5.0 [APG 2018/11/25]
+ * @version 0.7.1 [APG 2019/08/27]
+ * @version 0.8.0 [APG 2022/03/12] Porting to Deno
+ * @version 0.8.0 [APG 2022/05/01] Refactoring names
+ * @version 0.9.0 [APG 2022/09/10] Split in several module + Escape Html
+ * @version 0.9.1 [APG 2022/09/11] Deno Deploy Beta
+ * -----------------------------------------------------------------------
+ */
+export class ApgUtsIs {
+
+  static IsNumber(an: any): boolean {
+    return (!isNaN(parseFloat(an)) && isFinite(an));
+  }
+
+  static IsInteger(an: any): boolean {
+    let r = this.IsNumber(an);
+
+    if(r) {
+      const n = parseFloat(an);
+      if(!Number.isInteger(n)) {
+        r = false;
+      }
+    }
+
+    return r;
+  }
+
+  static IsDigitChar(acharCode: number): boolean {
+    return (acharCode >= "0".charCodeAt(0) && acharCode <= "9".charCodeAt(0));
+  }
+
+  static IsTrueish(avalue?: string) {
+
+    if(!avalue)
+      return false;
+    const value = avalue.trim().toLowerCase();
+
+    switch(value) {
+      case "true":
+      case "1":
+      case "on":
+      case "yes":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  static IsNumeric(an: string) {
+    const isNumber: boolean = /^-?[\d.]+(?:e-?\d+)?$/.test(an);
+    if(!isNumber) {
+      return false;
+    } else {
+      return ApgUtsIs.IsNumber(an);
+    }
+  }
+
+}
