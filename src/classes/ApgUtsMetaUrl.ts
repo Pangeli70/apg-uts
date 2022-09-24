@@ -2,7 +2,7 @@
  * @module [Utils]
  * @author [APG] ANGELI Paolo Giusto
  * @version 0.8.0 [APG 2022/08/09]
- * @version 0.9.1 [APG 2022/09/18] Deno Deploy
+ * @version 0.9.1 [APG 2022/09/18] Github
  * -----------------------------------------------------------------------
  */
 

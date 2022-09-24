@@ -1,22 +1,17 @@
 /** -----------------------------------------------------------------------
- * @module [Mng] Mongo Utilities
+ * @module [Uts] General purpose Utilities
  * @author [APG] ANGELI Paolo Giusto
  * ------------------------------------------------------------------------
  */
-export type {
-    IApgMngUpdateOneResult,
-    IApgMngUpdateManyResult
-} from './src/interfaces/IApgMngUpdateResult.ts';
+export * from './src/classes/ApgUtsDateTimeStamp.ts';
+export * from './src/classes/ApgUtsEnum.ts';
+export * from './src/classes/ApgUtsFs.ts';
+export * from './src/classes/ApgUtsIs.ts';
+export * from './src/classes/ApgUtsMap.ts';
+export * from './src/classes/ApgUtsMath.ts';
+export * from './src/classes/ApgUtsMetaUrl.ts';
+export * from './src/classes/ApgUtsObj.ts';
+export * from './src/classes/ApgUtsServer.ts';
+export * from './src/classes/ApgUtsStr.ts';
 
-export type {
-    TApgMngInsertResult,
-    TApgMngMultipleInsertResult
-} from './src/types/TApgMngInsertResult.ts';
-
-export {
-    ApgMngService
-} from './src/classes/ApgMngService.ts';
-
-export {
-    eApgMngCodedErrors
-} from './src/enums/eApgMngCodedErrors.ts';
+export type { IApgUtsServerInfo } from './src/interfaces/IApgUtsServerInfo.ts';
