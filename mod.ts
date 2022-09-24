@@ -13,5 +13,6 @@ export * from './src/classes/ApgUtsMetaUrl.ts';
 export * from './src/classes/ApgUtsObj.ts';
 export * from './src/classes/ApgUtsServer.ts';
 export * from './src/classes/ApgUtsStr.ts';
+export * from './src/classes/ApgUtsSvcBase.ts';
 
 export type { IApgUtsServerInfo } from './src/interfaces/IApgUtsServerInfo.ts';
