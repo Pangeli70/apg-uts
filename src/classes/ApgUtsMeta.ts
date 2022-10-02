@@ -9,7 +9,7 @@
 import { ApgUtsMetaUrl } from "./ApgUtsMetaUrl.ts";
 
 /** Basic Apg Service */
-export abstract class ApgUtsSvcBase {
+export abstract class ApgUtsMeta {
     private readonly _META_URL: ApgUtsMetaUrl;
     readonly CLASS_NAME: string;
 
