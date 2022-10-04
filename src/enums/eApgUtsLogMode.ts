@@ -1,14 +1,10 @@
 /** -----------------------------------------------------------------------
  * @module [Uts]
  * @author [APG] ANGELI Paolo Giusto
- * @version 0.9.1 [APG 2022/09/11] Github Beta
+ * @version 0.9.2 [APG 2022/10/02] Github Beta
  * -----------------------------------------------------------------------
 */
-
-export interface IApgUtsServerInfo {
-  name: string;
-  title: string;
-  subtitle: string;
-  localPort: number;
-
+export enum eApgUtsLogMode {
+    quiet = "quiet",
+    verbose = "verbose"
 }
