@@ -9,111 +9,210 @@ import { StdColors } from "../../deps.ts"
 import { ApgUtsMeta } from "./ApgUtsMeta.ts";
 import { ApgUtsObj } from "./ApgUtsObj.ts";
 
+export enum eApgUtsSpecClause {
+  title = "title",
+  init = "init",
+  when = "when",
+  expect = "expect",
+  skip = "skip",
+  success = "success",
+  failure = "failure",
+  resume = "resume",
+  final = "final"
+}
+
+export interface IApgUtsSpecEvent {
+  clause: eApgUtsSpecClause,
+  message: string,
+  hrt: number
+}
 
 export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
   static readonly CONSOLE_WIDTH = 80;
-  static readonly SPACER = "-".repeat(ApgUtsSpecable.CONSOLE_WIDTH - 1)
+  static readonly SPACER = "-".repeat(ApgUtsSpecable.CONSOLE_WIDTH - 1);
 
-
-
-  protected static _startTime = 0;
   protected static _totalSkipped = 0;
   protected static _totalSuccessful = 0;
   protected static _totalFailed = 0;
 
   protected _flags: { [name: string]: boolean } = {}
-
   protected _titleTime = 0;
   protected _skipped = 0;
   protected _successful = 0;
   protected _failed = 0;
+  protected _events: IApgUtsSpecEvent[] = [];
+
 
   specTitle(atitle: string) {
     const spacer = ApgUtsSpecable.SPACER;
     console.log(StdColors.yellow(`\n+${spacer}\n| ${atitle}\n+${spacer}`));
-    this._titleTime = performance.now();
+
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.title,
+      message: atitle,
+      hrt: performance.now()
+    }
+    this._events.push(event);
   }
 
-  specName(aname: string) {
+
+  specInit(aname: string) {
     console.log("|\n+-" + aname + "\n|");
-    return (this._flags[aname] === undefined) ? false : this._flags[aname];
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.init,
+      message: aname,
+      hrt: performance.now()
+    }
+    this._events.push(event);
+    let r = (this._flags[aname] === undefined) ? false : this._flags[aname];
+
+    r = this.#specSkip(r);
+    return r;
   }
 
   specWhen(acase: string) {
-    console.log("|   " + acase);
+    const message = "When " + acase + "...";
+    console.log("|   " + message);
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.when,
+      message: message,
+      hrt: performance.now()
+    }
+    this._events.push(event);
   }
 
-  specSkip(askip: boolean, amessage = "") {
-    if (askip) { 
+  specWeExpect(aexpect: string) {
+    const message = "We expect " + aexpect;
+    console.log("|   " + message);
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.expect,
+      message: message,
+      hrt: performance.now()
+    }
+    this._events.push(event);
+  }
 
+
+  #specSkip(arun: boolean, amessage = "") {
+    if (!arun) {
+      let message = amessage;
       const res = StdColors.gray("       SKIPPED");
       if (amessage == "") {
-        amessage = "This test was..."
+        message = "This test was..."
       }
-      
+
       this._skipped++;
       ApgUtsSpecable._totalSkipped++;
-      console.log("|     " + amessage + "\n|" + res);
+      console.log("|     " + message + "\n|" + res);
+
+      const event: IApgUtsSpecEvent = {
+        clause: eApgUtsSpecClause.skip,
+        message: amessage,
+        hrt: performance.now()
+      }
+      this._events.push(event);
     }
-    return !askip;
+    return arun;
   }
 
-  specResult(aresult: string, ar: boolean) {
-    let res = StdColors.green("       SUCCESS");
+
+  specWeGot(aresult: string, ar: boolean) {
+    const message = "We got " + aresult
+    let res = "";
     if (ar === true) {
+
+      res = StdColors.green("       SUCCESS");
       this._successful++;
       ApgUtsSpecable._totalSuccessful++;
+
+      const event: IApgUtsSpecEvent = {
+        clause: eApgUtsSpecClause.success,
+        message: message,
+        hrt: performance.now()
+      }
+      this._events.push(event);
+
     }
     else {
+
       res = StdColors.red("       FAILURE");
       this._failed++;
       ApgUtsSpecable._totalFailed++;
+
+      const event: IApgUtsSpecEvent = {
+        clause: eApgUtsSpecClause.failure,
+        message: message,
+        hrt: performance.now()
+      }
+      this._events.push(event);
+
     }
-    console.log("|     " + aresult + "\n|" + res);
+    console.log("|     " + message + "\n|" + res);
   }
 
+
   specResume() {
-    const elapsed = performance.now() - this._titleTime;
-    const totalTime = StdColors.blue(`${elapsed.toFixed(1)}ms`);
+
     const successfull = StdColors.green(`${this._successful}`);
     const failed = StdColors.red(`${this._failed}`);
     const skipped = StdColors.gray(`${this._skipped}`);
+    const message = `Successful: ${successfull}, Failed: ${failed}, Skipped: ${skipped}`;
 
     const spacer = ApgUtsSpecable.SPACER;
     const resume = StdColors.yellow(
       `+${spacer}\n` +
-      `| Total time > ${totalTime} \n` +
-      `| Successful: ${successfull}, Failed: ${failed}, Skipped: ${skipped} \n` +
+      `| ${message} \n` +
       `+${spacer}\n`);
     console.log(resume);
+
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.resume,
+      message: message,
+      hrt: performance.now()
+    }
+    this._events.push(event);
   }
 
-  static InitTimer() {
-    this._startTime = performance.now();
-  }
 
-  static FinalResume() {
-    const elapsed = performance.now() - this._startTime;
-    const totalTime = StdColors.blue(`${elapsed.toFixed(1)}ms`);
-    const successfull = StdColors.green(`${this._totalSuccessful}`);
-    const failed = StdColors.red(`${this._totalFailed}`);
-    const skipped = StdColors.gray(`${this._totalSkipped}`);
+  specFinal() {
+
+    const successfull = StdColors.green(`${ApgUtsSpecable._totalSuccessful}`);
+    const failed = StdColors.red(`${ApgUtsSpecable._totalFailed}`);
+    const skipped = StdColors.gray(`${ApgUtsSpecable._totalSkipped}`);
+    const message = `Successful: ${successfull}, Failed: ${failed}, Skipped: ${skipped}`;
 
     const spacer = ApgUtsSpecable.SPACER;
     const resume = StdColors.magenta(
       `+${spacer}\n` +
-      `| Resume \n` +
+      `| Final resume \n` +
       `+${spacer}\n` +
-      `| Total time > ${totalTime} \n` +
-      `| Successful: ${successfull}, Failed: ${failed}, Skipped: ${skipped} \n` +
+      `| ${message}\n` +
       `+${spacer}\n`);
     console.log(resume)
+
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.resume,
+      message: message,
+      hrt: performance.now()
+    }
+    this._events.push(event);
+
+    return ApgUtsSpecable._totalFailed == 0;
   }
 
-  return(): boolean {
-    return this._failed > 0;
+
+  abstract specs(): void | Promise<void>;
+
+
+  async run(arun: boolean) {
+    if (!arun) return false;
+    this.specTitle(this.CLASS_NAME);
+    await this.specs();
+    return this.specFinal();
   }
+
+
 
   areEqualNoDeep<T>(a: T, b: T): boolean {
     // TODO improve this checking for basic types
