@@ -19,12 +19,12 @@ export class ApgUtsFs {
     try {
       const fileInfo = Deno.statSync(apath);
       r = fileInfo.isDirectory;
-    } catch(error) {
-      if(error && error.code === 'ENOENT') {
+    } catch (error) {
+      if (error && error.code === 'ENOENT') {
         // file or directory does not exist
         r = false;
       } else {
-        // unexpected error, maybe permissions, pass it along
+        // unexpected error, maybe permissions, pass it along as is
         throw error;
       }
     }
@@ -38,12 +38,12 @@ export class ApgUtsFs {
     try {
       const fileInfo = Deno.statSync(path);
       r = fileInfo.isDirectory;
-    } catch(error) {
-      if(error && error.code === 'ENOENT') {
+    } catch (error) {
+      if (error && error.code === 'ENOENT') {
         // directory does not exist
         r = false;
       } else {
-        // unexpected error, maybe permissions, pass it along
+        // unexpected error, maybe permissions, pass it along as is
         throw error;
       }
     }
@@ -53,7 +53,7 @@ export class ApgUtsFs {
 
   static IsFolderSync(apath: string): boolean {
 
-    if(apath.indexOf(".") > 0)
+    if (apath.indexOf(".") > 0)
       return false; // it was a path for a file maybe
 
     const r = this.FolderExistsSync(apath);
@@ -67,12 +67,12 @@ export class ApgUtsFs {
 
     const entries: string[] = [];
 
-    if(!this.IsFolderSync(apath)) {
+    if (!this.IsFolderSync(apath)) {
       return entries;
     }
 
-    for(const entry of Deno.readDirSync(apath)) {
-      if(entry.isDirectory) {
+    for (const entry of Deno.readDirSync(apath)) {
+      if (entry.isDirectory) {
         entries.push("/" + entry.name);
       }
     }
@@ -86,12 +86,12 @@ export class ApgUtsFs {
   static GetFileNamesSortedSync(apath: string, aext = '*'): string[] {
     const entries: string[] = [];
 
-    if(!this.IsFolderSync(apath)) {
+    if (!this.IsFolderSync(apath)) {
       return entries;
     }
 
-    for(const entry of Deno.readDirSync(apath)) {
-      if(entry.isFile) {
+    for (const entry of Deno.readDirSync(apath)) {
+      if (entry.isFile) {
         entries.push(entry.name);
       }
     }
@@ -121,7 +121,7 @@ export class ApgUtsFs {
         Deno.removeSync(file); // TODO test this
         deletedFiles.push(file);
       }
-      catch(error) {
+      catch (error) {
         ok = false;
         message = error.message;
         console.log(error);
@@ -135,13 +135,13 @@ export class ApgUtsFs {
 
     try {
       const stat = Deno.statSync(afile);
-      if(stat.isFile) {
+      if (stat.isFile) {
         return true;
       } else {
         return false;
       }
-    } catch(error) {
-      if(error && (
+    } catch (error) {
+      if (error && (
         (error.kind === Deno.errors.NotFound) ||
         (error.code === 'ENOENT')
       )) {
@@ -161,10 +161,16 @@ export class ApgUtsFs {
    */
   static ReadTextFileSync(afile: string): string {
     const decoder = new TextDecoder("utf-8");
-    // TODO this can fail badly throwing 
-    const fileContent = Deno.readFileSync(afile);
-    const r = decoder.decode(fileContent);
-    return r;
+    try {
+      // This can fail badly throwing 
+      const fileContent = Deno.readFileSync(afile);
+      const r = decoder.decode(fileContent);
+      return r;
+    }
+    catch (e) {
+      // So at least fail better with a meaningful message
+      throw new Error(`Reading file [${afile}]: ${e.message}`)
+    }
   }
 
 
@@ -175,10 +181,15 @@ export class ApgUtsFs {
    */
   static ReadBinFileSync(afile: string) {
 
-    // TODO this can fail badly throwing 
-    const r = Deno.readFileSync(afile);
-
-    return r;
+    try {
+      // this can fail badly throwing 
+      const r = Deno.readFileSync(afile);
+      return r;
+    }
+    catch (e) {
+      // So at least fail better with a meaningful message
+      throw new Error(`Reading file [${afile}]: ${e.message}`)
+    }
   }
 
 }
