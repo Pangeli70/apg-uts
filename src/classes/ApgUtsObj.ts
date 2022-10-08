@@ -15,6 +15,7 @@ import { ApgUtsMath } from "./ApgUtsMath.ts";
 
 
 export class ApgUtsObj {
+  
   static TypeOf(aunknown: unknown): string {
     if (aunknown === undefined) {
       return 'undefined';

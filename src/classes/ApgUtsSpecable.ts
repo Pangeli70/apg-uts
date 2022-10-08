@@ -8,24 +8,9 @@
 import { StdColors } from "../../deps.ts"
 import { ApgUtsMeta } from "./ApgUtsMeta.ts";
 import { ApgUtsObj } from "./ApgUtsObj.ts";
+import { eApgUtsSpecClause } from "../enums/eApgUtsSpecClause.ts"
+import { IApgUtsSpecEvent } from "../interfaces/IApgUtsSpecEvent.ts"
 
-export enum eApgUtsSpecClause {
-  title = "title",
-  init = "init",
-  when = "when",
-  expect = "expect",
-  skip = "skip",
-  success = "success",
-  failure = "failure",
-  resume = "resume",
-  final = "final"
-}
-
-export interface IApgUtsSpecEvent {
-  clause: eApgUtsSpecClause,
-  message: string,
-  hrt: number
-}
 
 export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
