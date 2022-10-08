@@ -202,7 +202,15 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
   }
 
 
-  abstract specs(): void | Promise<void>;
+  specs(): Promise<void> {
+    return new Promise<void>(() => {
+      throw new Error("If you want to call [Specs] method you must override the implementation.")
+    })
+  }
+
+  specsSync(): void {
+    throw new Error("If you want to call [SpecsSync] method you must override the implementation.")
+  }
 
 
   async run(arun: boolean) {
@@ -212,6 +220,13 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return this.specFinal();
   }
 
+
+  runSync(arun: boolean) {
+    if (!arun) return false;
+    this.specTitle(this.CLASS_NAME);
+    this.specsSync();
+    return this.specFinal();
+  }
 
 
   areEqualNoDeep<T>(a: T, b: T): boolean {
