@@ -7,14 +7,15 @@
 
 import { ApgUtsObj } from "../../src/classes/ApgUtsObj.ts";
 import { ApgUtsSpecable } from "../../src/classes/ApgUtsSpecable.ts";
+import { eApgUtsSpecRun } from "../../src/enums/eApgUtsSpecRun.ts";
 
 export class ApgUtsObjSpec extends ApgUtsSpecable {
 
     constructor() {
         super(import.meta.url)
 
-        this._flags = {
-            [this.S01_Indirect.name]: true,
+        this.flags = {
+            [this.S01_Indirect.name]: eApgUtsSpecRun.yes,
         }
     }
 
@@ -80,7 +81,7 @@ export class ApgUtsObjSpec extends ApgUtsSpecable {
     }
 
 
-    override specsSync() {
+    override specExecuteSync() {
         this.S01_Indirect();
     }
     

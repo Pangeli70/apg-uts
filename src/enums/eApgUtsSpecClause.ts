@@ -14,5 +14,7 @@ export enum eApgUtsSpecClause {
     success = "success",
     failure = "failure",
     resume = "resume",
-    final = "final"
+    final = "final",
+    mockInit = "mockInit",
+    mockEnd = "mockEnd"
 }

@@ -18,5 +18,7 @@ export * from './src/classes/ApgUtsStr.ts';
 export * from './src/classes/ApgUtsSpecable.ts';
 
 export { eApgUtsLogMode } from "./src/enums/eApgUtsLogMode.ts";
+export { eApgUtsSpecClause } from "./src/enums/eApgUtsSpecClause.ts";
+export { eApgUtsSpecRun } from "./src/enums/eApgUtsSpecRun.ts";
 
 export type { IApgUtsServerInfo } from './src/interfaces/IApgUtsServerInfo.ts';

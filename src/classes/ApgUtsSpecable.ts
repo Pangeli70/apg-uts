@@ -10,6 +10,8 @@ import { ApgUtsMeta } from "./ApgUtsMeta.ts";
 import { ApgUtsObj } from "./ApgUtsObj.ts";
 import { eApgUtsSpecClause } from "../enums/eApgUtsSpecClause.ts"
 import { IApgUtsSpecEvent } from "../interfaces/IApgUtsSpecEvent.ts"
+import { eApgUtsSpecRun } from "../enums/eApgUtsSpecRun.ts";
+import { eApgUtsLogMode } from "../enums/eApgUtsLogMode.ts";
 
 
 export abstract class ApgUtsSpecable extends ApgUtsMeta {
@@ -17,21 +19,44 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
   static readonly CONSOLE_WIDTH = 80;
   static readonly SPACER = "-".repeat(ApgUtsSpecable.CONSOLE_WIDTH - 1);
 
-  protected static _totalSkipped = 0;
-  protected static _totalSuccessful = 0;
-  protected static _totalFailed = 0;
+  private static _totalSkipped = 0;
+  private static _totalSuccessful = 0;
+  private static _totalFailed = 0;
 
-  protected _flags: { [name: string]: boolean } = {}
-  protected _titleTime = 0;
-  protected _skipped = 0;
-  protected _successful = 0;
-  protected _failed = 0;
-  protected _events: IApgUtsSpecEvent[] = [];
+  private _run = eApgUtsSpecRun.no;
+  protected flags: { [name: string]: eApgUtsSpecRun } = {}
 
+  private _skipped = 0;
+  private _successful = 0;
+  private _failed = 0;
 
-  specTitle(atitle: string) {
+  private _events: IApgUtsSpecEvent[] = [];
+
+  protected _logMode: eApgUtsLogMode = eApgUtsLogMode.verbose;
+
+  get Mode() {
+    return this._logMode;
+  }
+  set Mode(amode: eApgUtsLogMode) {
+    this._logMode = amode;
+  }
+
+  #log(amessage: string) {
+    if (this._logMode == eApgUtsLogMode.verbose) {
+      console.log(amessage);
+    }
+  }
+
+  get Events() {
+    return this._events;
+  }
+
+  constructor(aimportMetaUrl: string) {
+    super(aimportMetaUrl);
+  }
+
+  protected specTitle(atitle: string) {
     const spacer = ApgUtsSpecable.SPACER;
-    console.log(StdColors.yellow(`\n+${spacer}\n| ${atitle}\n+${spacer}`));
 
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.title,
@@ -39,26 +64,34 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       hrt: performance.now()
     }
     this._events.push(event);
+    const message = (StdColors.yellow(`\n+${spacer}\n| ${atitle}\n+${spacer}`));
+    console.log(message)
   }
 
-
-  specInit(aname: string) {
-    console.log("|\n+-" + aname + "\n|");
+  protected specInit(aname: string) {
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.init,
       message: aname,
       hrt: performance.now()
     }
     this._events.push(event);
-    let r = (this._flags[aname] === undefined) ? false : this._flags[aname];
+    const message = ("|\n+-" + aname + "\n|");
+    console.log(message);
 
-    r = this.#specSkip(r);
-    return r;
+    let r = (this.flags[aname]);
+    if (r === undefined) {
+      throw new Error(`Trying to initialize a spec [${aname}] not registered in the flags object`);
+    }
+    if (r == eApgUtsSpecRun.yes && this._run == eApgUtsSpecRun.no) {
+      r = eApgUtsSpecRun.no;
+    }
+    r = this.specSkip(r);
+    return r == eApgUtsSpecRun.yes;
   }
 
-  specWhen(acase: string) {
+  protected specWhen(acase: string) {
     const message = "When " + acase + "...";
-    console.log("|   " + message);
+    this.#log("|   " + message);
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.when,
       message: message,
@@ -67,9 +100,9 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
-  specWeExpect(aexpect: string) {
+  protected specWeExpect(aexpect: string) {
     const message = "We expect " + aexpect;
-    console.log("|   " + message);
+    this.#log("|   " + message);
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.expect,
       message: message,
@@ -78,9 +111,8 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
-
-  #specSkip(arun: boolean, amessage = "") {
-    if (!arun) {
+  protected specSkip(arun: eApgUtsSpecRun, amessage = "") {
+    if (arun == eApgUtsSpecRun.no) {
       let message = amessage;
       const res = StdColors.gray("       SKIPPED");
       if (amessage == "") {
@@ -89,7 +121,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
       this._skipped++;
       ApgUtsSpecable._totalSkipped++;
-      console.log("|     " + message + "\n|" + res);
+      this.#log("|     " + message + "\n|" + res);
 
       const event: IApgUtsSpecEvent = {
         clause: eApgUtsSpecClause.skip,
@@ -101,8 +133,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return arun;
   }
 
-
-  specWeGot(aresult: string, ar: boolean) {
+  protected specWeGot(aresult: string, ar: boolean) {
     const message = "We got " + aresult
     let res = "";
     if (ar === true) {
@@ -133,11 +164,10 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       this._events.push(event);
 
     }
-    console.log("|     " + message + "\n|" + res);
+    this.#log("|     " + message + "\n|" + res);
   }
 
-
-  specResume() {
+  protected specResume() {
 
     const successfull = StdColors.green(`${this._successful}`);
     const failed = StdColors.red(`${this._failed}`);
@@ -151,6 +181,10 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       `+${spacer}\n`);
     console.log(resume);
 
+    this._successful = 0;
+    this._failed = 0;
+    this._skipped = 0;
+
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.resume,
       message: message,
@@ -159,8 +193,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
-
-  specFinal() {
+  protected specFinal() {
 
     const successfull = StdColors.green(`${ApgUtsSpecable._totalSuccessful}`);
     const failed = StdColors.red(`${ApgUtsSpecable._totalFailed}`);
@@ -174,7 +207,12 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       `+${spacer}\n` +
       `| ${message}\n` +
       `+${spacer}\n`);
-    console.log(resume)
+    console.log(resume);
+
+    ApgUtsSpecable._totalSuccessful = 0;
+    ApgUtsSpecable._totalSkipped = 0;
+    ApgUtsSpecable._totalFailed = 0;
+
 
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.resume,
@@ -186,50 +224,129 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return ApgUtsSpecable._totalFailed == 0;
   }
 
-
-  specs(): Promise<void> {
+  protected specExecute(): Promise<void> {
     return new Promise<void>(() => {
-      throw new Error("If you want to call [Specs] method you must override the implementation.")
+      throw new Error(`If you want to call method [${this.specExecute.name}] you must override the implementation.`)
     })
   }
 
-  specsSync(): void {
-    throw new Error("If you want to call [SpecsSync] method you must override the implementation.")
+  protected specExecuteSync(): void {
+    throw new Error(`If you want to call method [${this.specExecuteSync.name}] method you must override the implementation.`)
   }
 
+  protected specMockInit() {
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.mockInit,
+      message: "",
+      hrt: performance.now()
+    }
+    this._events.push(event);
 
-  async run(arun: boolean) {
-    if (!arun) return false;
+    const spacer = ApgUtsSpecable.SPACER;
+    const resume = StdColors.cyan(
+      `+${spacer}\n` +
+      `| Mock init \n` +
+      `+${spacer}\n`);
+    this.#log(resume);
+
+    return Promise.resolve(event);
+  }
+
+  protected specMockInitSync(amessage = "") {
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.mockInit,
+      message: amessage,
+      hrt: performance.now()
+    }
+    this._events.push(event);
+
+    const spacer = ApgUtsSpecable.SPACER;
+    const resume = StdColors.cyan(
+      `+${spacer}\n` +
+      `| Mock init \n` +
+      `+${spacer}\n`);
+    this.#log(resume);
+
+    return event;
+  }
+
+  async specRun(arun: eApgUtsSpecRun) {
+    this._run = arun;
+    if (this._run == eApgUtsSpecRun.no) return false; 
     this.specTitle(this.CLASS_NAME);
-    await this.specs();
+    let r = await this.specMockInit();
+    if (r.message == "") {
+      await this.specExecute();
+      r = await this.specMockEnd();
+    }
     return this.specFinal();
   }
 
-
-  runSync(arun: boolean) {
-    if (!arun) return false;
+  specRunSync(arun: eApgUtsSpecRun) {
+    this._run = arun;
+    if (this._run == eApgUtsSpecRun.no) return false;
     this.specTitle(this.CLASS_NAME);
-    this.specsSync();
+    let r = this.specMockInitSync()
+    if (r.message == "") {
+      this.specExecuteSync();
+      r = this.specMockEndSync();
+    }
     return this.specFinal();
   }
 
+  protected specMockEnd(amessage = "") {
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.mockEnd,
+      message: amessage,
+      hrt: performance.now()
+    }
+    this._events.push(event);
 
-  areEqualNoDeep<T>(a: T, b: T): boolean {
+    const spacer = ApgUtsSpecable.SPACER;
+    const resume = StdColors.cyan(
+      `+${spacer}\n` +
+      `| Mock End \n` +
+      `+${spacer}\n`);
+    this.#log(resume);
+
+    return Promise.resolve(event);
+  }
+
+  protected specMockEndSync(amessage = "") {
+    const event: IApgUtsSpecEvent = {
+      clause: eApgUtsSpecClause.mockEnd,
+      message: amessage,
+      hrt: performance.now()
+    }
+    this._events.push(event);
+
+    const spacer = ApgUtsSpecable.SPACER;
+    const resume = StdColors.cyan(
+      `+${spacer}\n` +
+      `| Mock End \n` +
+      `+${spacer}\n`);
+    this.#log(resume);
+
+    return event;
+  }
+
+
+  protected areEqualNoDeep<T>(a: T, b: T): boolean {
     // TODO improve this checking for basic types
     return a === b;
   }
 
-  areDeepEqual(a: any, b: any): boolean {
+  protected areDeepEqual(a: any, b: any): boolean {
     return ApgUtsObj.DeepCompare(a, b);
   }
 
-  isNotUndefOrNull(a: any) {
+  protected isNotUndefOrNull(a: any) {
     if (a === undefined) return false;
     if (a === null) return false;
     return true;
   }
 
-  isNotEmptyString(a: any) {
+  protected isNotEmptyString(a: any) {
     if (a === "") return false;
     return true;
   }
