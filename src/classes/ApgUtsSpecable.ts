@@ -169,6 +169,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
   protected specResume() {
 
+    const eventMessage = `Successful: ${this._successful}, Failed: ${this._failed}, Skipped: ${this._skipped}`;
     const successfull = StdColors.green(`${this._successful}`);
     const failed = StdColors.red(`${this._failed}`);
     const skipped = StdColors.gray(`${this._skipped}`);
@@ -187,13 +188,15 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.resume,
-      message: message,
+      message: eventMessage,
       hrt: performance.now()
     }
     this._events.push(event);
   }
 
   protected specFinal() {
+
+    const eventMessage = `Successful: ${ApgUtsSpecable._totalSuccessful}, Failed: ${ApgUtsSpecable._totalFailed}, Skipped: ${ApgUtsSpecable._totalSkipped}`;
 
     const successfull = StdColors.green(`${ApgUtsSpecable._totalSuccessful}`);
     const failed = StdColors.red(`${ApgUtsSpecable._totalFailed}`);
@@ -215,8 +218,8 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
 
     const event: IApgUtsSpecEvent = {
-      clause: eApgUtsSpecClause.resume,
-      message: message,
+      clause: eApgUtsSpecClause.final,
+      message: eventMessage,
       hrt: performance.now()
     }
     this._events.push(event);
