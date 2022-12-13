@@ -275,7 +275,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
   async specRun(arun: eApgUtsSpecRun) {
     this._run = arun;
-    if (this._run == eApgUtsSpecRun.no) return false; 
+    if (this._run == eApgUtsSpecRun.no) return false;
     this.specTitle(this.CLASS_NAME);
     let r = await this.specMockInit();
     if (r.message == "") {
@@ -333,6 +333,36 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return event;
   }
 
+  async sendToTestService(
+    auri: string,
+    aframework: string,
+    aspecs: string,
+  ) {
+
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+
+    const body = JSON.stringify({
+      framework: aframework,
+      specs: aspecs,
+      events: this.Events
+    });
+
+    const postParams: RequestInit = {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers,
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body,
+    }
+    const r = await fetch(auri, postParams);
+    this.#log("Remote storage result: " + JSON.stringify(await r.json()));
+    return r;
+  }
 
   protected areEqualNoDeep<T>(a: T, b: T): boolean {
     // TODO improve this checking for basic types
