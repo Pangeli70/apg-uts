@@ -47,33 +47,33 @@ export class ApgUtsObjSpec extends ApgUtsSpecable {
             }
         } 
 
+        this.specWhen("trying to access the [unkn] property");
         let value = ApgUtsObj.Indirect(mockObj, "unkn");
         let r = (value === mockObj.unkn);
-        this.specWhen("trying to access the [unkn] property");
         this.specWeExpect(`to get the value [${mockObj.unkn}]`)
         this.specWeGot(`${value}`, r);
 
+        this.specWhen("trying to access the [prop1] property");
         value = ApgUtsObj.Indirect(mockObj, "prop1");
         r = (value === mockObj.prop1);
-        this.specWhen("trying to access the [prop1] property");
         this.specWeExpect(`to get the value [${mockObj.prop1}]`)
         this.specWeGot(`[${value}]`, r);
 
+        this.specWhen("trying to access the [node1.prop2] property");
         value = ApgUtsObj.Indirect(mockObj, "node1.prop2");
         r = (value === mockObj.node1.prop2);
-        this.specWhen("trying to access the [node1.prop2] property");
         this.specWeExpect(`to get the value [${mockObj.node1.prop2}]`)
         this.specWeGot(`[${value}]`, r);
 
+        this.specWhen("trying to access the [node1.node2.node3.prop6] property");
         value = ApgUtsObj.Indirect(mockObj, "node1.node2.node3.prop6").toString();
         r = (value === mockObj.node1.node2.node3.prop6.toString());
-        this.specWhen("trying to access the [node1.node2.node3.prop6] property");
         this.specWeExpect(`to get the value [${mockObj.node1.node2.node3.prop6.toString() }]`)
         this.specWeGot(`[${value}]`, r);
 
+        this.specWhen("trying to access the [node1.node2.node3.prop6[2] property");
         value = ApgUtsObj.Indirect(mockObj, "node1.node2.node3.prop6[2]");
         r = (value === mockObj.node1.node2.node3.prop6[2]);
-        this.specWhen("trying to access the [node1.node2.node3.prop6[2] property");
         this.specWeExpect(`to get the value [${mockObj.node1.node2.node3.prop6[2]}]`)
         this.specWeGot(`[${value}]`, r);
 

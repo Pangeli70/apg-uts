@@ -360,7 +360,16 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       body,
     }
     const r = await fetch(auri, postParams);
-    this.#log("Remote storage result: " + JSON.stringify(await r.json()));
+
+    const spacer = ApgUtsSpecable.SPACER;
+    const resume = StdColors.brightGreen(
+      `+${spacer}\n` +
+      `| Remote storage (${auri}) result\n` +
+      `+${spacer}\n` +
+      `| ${JSON.stringify(await r.json())}\n` +
+      `+${spacer}\n`);
+    this.#log(resume);
+
     return r;
   }
 
