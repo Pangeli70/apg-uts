@@ -8,13 +8,14 @@
  * @version 0.8.1 [APG 2022/05/01] Refactoring names
  * @version 0.9.0 [APG 2022/09/10] Split in several module + Escape Html
  * @version 0.9.1 [APG 2022/09/11] Github Beta
+ * @version 0.9.3 [APG 2022/12/17] Lines max length and num lines
  * -----------------------------------------------------------------------
  */
 export class ApgUtsStr {
 
   static Capitalize(astring: string) {
     // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
-    if(typeof astring !== 'string') { return ''; }
+    if (typeof astring !== 'string') { return ''; }
     return astring.charAt(0).toUpperCase() + astring.slice(1).toLowerCase();
   }
 
@@ -22,7 +23,7 @@ export class ApgUtsStr {
 
     let r = '';
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-    for(let i = 0;i < alength;i++) {
+    for (let i = 0; i < alength; i++) {
       const n = Math.floor(Math.random() * chars.length);
       r += chars.charAt(n);
     }
@@ -33,7 +34,7 @@ export class ApgUtsStr {
 
     let r = '';
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz_-=*+[]{}()<>?!%$£§|';
-    for(let i = 0;i < alength;i++) {
+    for (let i = 0; i < alength; i++) {
       const n = Math.floor(Math.random() * chars.length);
       r += chars.charAt(n);
     }
@@ -42,7 +43,7 @@ export class ApgUtsStr {
 
   static FilledCentered(avalue: string, awidth: number, aborder: string, afiller: string) {
     const borderW = aborder.length;
-    if(afiller.length > 1)
+    if (afiller.length > 1)
       afiller = afiller[0];
     const valueW = avalue.length;
     const tobeFilledW = awidth - valueW - (borderW * 2);
@@ -59,7 +60,7 @@ export class ApgUtsStr {
   static FilledRight(avalue: string, awidth: number, aborder: string, afiller: string) {
 
     const borderW = aborder.length;
-    if(afiller.length > 1)
+    if (afiller.length > 1)
       afiller = afiller[0];
     const leftPad = avalue.length + 1;
     const rightPaddedString = avalue
@@ -81,9 +82,9 @@ export class ApgUtsStr {
     const starPositions: number[] = [];
     let ok = true;
     let lstarPosition = 0;
-    while(ok) {
+    while (ok) {
       lstarPosition = afilter.indexOf('*', lstarPosition);
-      if(lstarPosition === -1) {
+      if (lstarPosition === -1) {
         ok = false;
       }
       else {
@@ -93,25 +94,25 @@ export class ApgUtsStr {
     }
 
     // No *
-    if(starPositions.length === 0) {
+    if (starPositions.length === 0) {
       r = new RegExp('.*' + afilter + '.*');
     }
 
     // Two or more *
-    else if(starPositions.length > 1) {
+    else if (starPositions.length > 1) {
       const filterParts: string[] = afilter.split('*');
       const l = filterParts.length;
       let pattern = '';
 
-      for(let i = 0;i < l;i++) {
-        if(i === 0) {
-          if(filterParts[i] !== '') {
+      for (let i = 0; i < l; i++) {
+        if (i === 0) {
+          if (filterParts[i] !== '') {
             pattern += '^';
           }
         }
         pattern += filterParts[i];
-        if(i === l - 1) {
-          if(filterParts[i] !== '') {
+        if (i === l - 1) {
+          if (filterParts[i] !== '') {
             pattern += '$';
           }
           else {
@@ -130,10 +131,10 @@ export class ApgUtsStr {
     else {
 
       let pattern = '';
-      if(starPositions[0] === 0) {
+      if (starPositions[0] === 0) {
         pattern = '.*' + afilter.replace('*', '') + '$';
       }
-      else if(starPositions[0] === afilter.length) {
+      else if (starPositions[0] === afilter.length) {
         pattern = '^' + afilter.replace('*', '') + '.*';
       }
       else {
@@ -155,27 +156,56 @@ export class ApgUtsStr {
       .replaceAll("'", '&#039;');
   }
 
+  /** Replaces invalid characters in urls with correct escape sequences */
   static Urlify(apath: string) {
     let r = apath;
     let i = 0;
     const l = r.length;
     do {
       i = r.indexOf('=');
-      if(i !== -1) {
+      if (i !== -1) {
         let b = true;
         let j = i;
         do {
           j++;
-          if(r[j] === '&' || j === l) {
+          if (r[j] === '&' || j === l) {
             r = r.substring(0, i) + r.substring(j, l);
             b = false;
           }
-        } while(b);
+        } while (b);
       }
-    } while(i !== -1);
+    } while (i !== -1);
     r = r
       .replace(/[\/?&]/g, '_')
       .replace(/[:=]/g, '');
+    return r;
+  }
+
+  /** Get the number of lines in a multiline text.
+   * Splits the argument using all possible combinations of \r and \n.
+   */
+  static LinesNum(amultiLineText: string) {
+    let r = 0;
+
+    const chunks = amultiLineText.split(/\r\n|\n\r|\n|\r/);
+    r = chunks.length;
+
+    return r;
+  }
+
+
+  /** Get the length of the longest line in a multiline text. 
+   * Splits the argument using all possible combinations of \r and \n.
+   */
+  static LinesMaxLength(amultiLineText: string) {
+    let r = 0;
+
+    const chunks = amultiLineText.split(/\r\n|\n\r|\n|\r/);
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].length > r) {
+        r = chunks[i].length;
+      }
+    }
     return r;
   }
 
