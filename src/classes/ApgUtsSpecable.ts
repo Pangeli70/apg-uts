@@ -375,8 +375,9 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
   }
 
 
-  async runTestAndGetHtmlResultFromTestService(
-    arun: eApgUtsSpecRun,
+  static async RunTestAndGetHtmlResultFromTestService(
+    aspecable: ApgUtsSpecable,
+    aasync: boolean,
     atestServerUriStoreRoute: string,
     atestServerUriEventsRoute: string,
     aframeworkName: string,
@@ -384,7 +385,6 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     afile: string
   ) {
     const r = {
-      run: arun,
       testResult: false,
       totalTestTime: 0,
       storeToServiceTime: 0,
@@ -393,19 +393,17 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
       saveToLocalFileTime: 0
     };
 
-    this._run = arun;
-    if (this._run == eApgUtsSpecRun.no) return r;
 
     let current = 0;
     let last = 0;
 
     last = current = performance.now();
-    r.testResult = await this.specRun(arun);
+    r.testResult = (aasync) ? await aspecable.specRun(eApgUtsSpecRun.yes) : aspecable.specRunSync(eApgUtsSpecRun.yes);
     current = performance.now();
     r.totalTestTime = current - last;
     last = current;
 
-    const firstFetchResponse = await this.sendToTestService(atestServerUriStoreRoute, aframeworkName, aspecName);
+    const firstFetchResponse = await aspecable.sendToTestService(atestServerUriStoreRoute, aframeworkName, aspecName);
     current = performance.now();
     r.storeToServiceTime = current - last;
     last = current;
