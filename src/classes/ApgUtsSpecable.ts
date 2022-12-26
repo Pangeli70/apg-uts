@@ -333,6 +333,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return event;
   }
 
+
   async sendToTestService(
     auri: string,
     aframework: string,
@@ -373,10 +374,71 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return r;
   }
 
+
+  async runTestAndGetHtmlResultFromTestService(
+    arun: eApgUtsSpecRun,
+    atestServerUriStoreRoute: string,
+    atestServerUriEventsRoute: string,
+    aframeworkName: string,
+    aspecName: string,
+    afile: string
+  ) {
+    const r = {
+      run: arun,
+      testResult: false,
+      totalTestTime: 0,
+      storeToServiceTime: 0,
+      fetchHtmlFromServiceTime: 0,
+      convertToHtmlTime: 0,
+      saveToLocalFileTime: 0
+    };
+
+    this._run = arun;
+    if (this._run == eApgUtsSpecRun.no) return r;
+
+    let current = 0;
+    let last = 0;
+
+    last = current = performance.now();
+    r.testResult = await this.specRun(arun);
+    current = performance.now();
+    r.totalTestTime = current - last;
+    last = current;
+
+    const firstFetchResponse = await this.sendToTestService(atestServerUriStoreRoute, aframeworkName, aspecName);
+    current = performance.now();
+    r.storeToServiceTime = current - last;
+    last = current;
+
+    if (firstFetchResponse.ok) {
+      const url = atestServerUriEventsRoute + "/" + aframeworkName + "/" + aspecName + "/last";
+      console.log(url);
+      const secondFetchResponse = await fetch(url);
+      current = performance.now();
+      r.fetchHtmlFromServiceTime = current - last;
+      last = current;
+
+      const html = await secondFetchResponse.text();
+      current = performance.now();
+      r.convertToHtmlTime = current - last;
+      last = current;
+
+      if (secondFetchResponse.ok) {
+        await Deno.writeTextFile(afile, html);
+        current = performance.now();
+        r.saveToLocalFileTime = current - last;
+        current = last = 0;
+      }
+    }
+    return r;
+  }
+
+
   protected areEqualNoDeep<T>(a: T, b: T): boolean {
     // TODO improve this checking for basic types
     return a === b;
   }
+
 
   protected areDeepEqual(a: any, b: any): boolean {
     return ApgUtsObj.DeepCompare(a, b);

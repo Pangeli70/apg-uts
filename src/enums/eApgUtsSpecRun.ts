@@ -8,7 +8,7 @@
 /**
  * Flag to run or skip a test spec
  */
-export enum eApgUtsSpecRun { 
-    yes,
-    no
+export enum eApgUtsSpecRun {
+    no,
+    yes
 }
