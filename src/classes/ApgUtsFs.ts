@@ -118,7 +118,7 @@ export class ApgUtsFs {
     files.forEach(fileName => {
       try {
         const file = apath + fileName;
-        Deno.removeSync(file); // TODO test this -- APG 20220911
+        Deno.removeSync(file);
         deletedFiles.push(file);
       }
       catch (error) {
