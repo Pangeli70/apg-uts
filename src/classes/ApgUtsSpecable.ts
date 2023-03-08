@@ -433,7 +433,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
 
   protected areEqualNoDeep<T>(a: T, b: T): boolean {
-    // TODO @9 APG 20221002 -- improve this checking for basic types
+    // TODO @9 improve this checking for basic types -- APG 20221002
     return a === b;
   }
 
