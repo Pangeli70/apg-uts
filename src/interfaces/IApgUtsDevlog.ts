@@ -18,8 +18,8 @@ export interface IApgUtsDevlogTodo {
 export interface IApgUtsDevlogDone {
   date: string;
   version: string;
+  hours?: number;
   milestone: string;
-  description: string;
   activities: string[];
 }
 
