@@ -4,6 +4,7 @@
  * @version 0.9.2 [APG 2022/10/08] Github Beta
  * @version 0.9.3 [APG 2022/12/13] Missing exports
  * @version 0.9.5 [APG 2023/03/04] Devlog
+ * @version 0.9.6 [APG 2023/04/08] Hypelinks
  * ------------------------------------------------------------------------
  */
 export * from './src/classes/ApgUtsDateTimeStamp.ts';
@@ -26,4 +27,12 @@ export { eApgUtsSpecRun } from "./src/enums/eApgUtsSpecRun.ts";
 
 export type { IApgUtsServerInfo } from './src/interfaces/IApgUtsServerInfo.ts';
 export type { IApgUtsSpecEvent } from './src/interfaces/IApgUtsSpecEvent.ts';
-export type { IApgUtsDevlog } from './src/interfaces/IApgUtsDevlog.ts';
+export type {
+    IApgUtsDevlog,
+    IApgUtsDevlogDone,
+    IApgUtsDevlogTodo
+} from './src/interfaces/IApgUtsDevlog.ts';
+export type {
+    IApgUtsHyperlink,
+    IApgUtsHyperlinksGroup
+} from './src/interfaces/IApgUtsHyperlinks.ts';
