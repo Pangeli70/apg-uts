@@ -8,16 +8,18 @@
  * @version 0.8.1 [APG 2022/05/01] Refactoring names
  * @version 0.9.0 [APG 2022/09/10] Split in several module + Escape Html
  * @version 0.9.1 [APG 2022/09/11] Github Beta
+ * @version 0.9.6 [APG 2023/04/10] Deg to rad ad vice versa + Degrees Functions
  * -----------------------------------------------------------------------
  */
 
 import { ApgUtsIs } from "./ApgUtsIs.ts";
 
 /** 
- * Static general purpose utility functions
+ * Static general purpose math utility functions
  */
 export class ApgUtsMath {
     static readonly EPSILON = 0.000001;
+    static readonly TO_RAD = Math.PI / 180;
 
     static SafeInteger(atext: string | undefined): number | undefined {
         if (atext && ApgUtsIs.IsInteger(atext)) {
@@ -82,6 +84,38 @@ export class ApgUtsMath {
 
     static Ceil(value: number, exp: number) {
         return this.#decimalAdjust('ceil', value, exp);
+    }
+
+    static RadToDeg(arad: number) {
+        return arad / this.TO_RAD;
+    }
+
+    static DegToRad(adeg: number) { 
+        return adeg * this.TO_RAD;
+    }
+
+    static DegSin(aangle: number) {
+        return Math.sin(aangle * this.TO_RAD);
+    }
+
+    static DegArcSin(aheight: number) { 
+        return Math.asin(aheight) / this.TO_RAD;
+    }
+
+    static DegCos(aangle: number) {
+        return Math.cos(aangle * this.TO_RAD);
+    }
+
+    static DegArcCos(awidth: number) {
+        return Math.acos(awidth) / this.TO_RAD;
+    }
+
+    static DegTan(aangle: number) {
+        return Math.cos(aangle * this.TO_RAD);
+    }
+
+    static DegArcTan(aheight: number) {
+        return Math.atan(aheight) / this.TO_RAD;
     }
 }
 
