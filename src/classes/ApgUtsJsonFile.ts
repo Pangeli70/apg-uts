@@ -1,5 +1,5 @@
 /** ----------------------------------------------------------------------
- * @module [JSON]
+ * @module [apg-uts]
  * @author [APG] ANGELI Paolo Giusto
  * @version 0.2.0 [APG 2018/06/02]
  * @version 0.4.0 [APG 2018/10/20]

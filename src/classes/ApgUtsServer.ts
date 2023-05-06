@@ -1,5 +1,5 @@
 /** -----------------------------------------------------------------------
- * @module [Uts]
+ * @module [apg-uts]
  * @author [APG] ANGELI Paolo Giusto
  * @version 0.9.1 [APG 2022/09/11] Github Beta
  * @version 0.9.6 [APG 2023/04/24] Modified fileds to match Apg-Dir entry
@@ -25,8 +25,5 @@ export class ApgUtsServer {
     console.log(`\n\n\n`);
   }
 
-  static IsDeploy() { 
-    return Deno.env.get('DENO_DEPLOYMENT_ID') != undefined;
-  }
 
 }
