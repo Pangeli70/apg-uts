@@ -5,9 +5,9 @@
  * ------------------------------------------------------------------------
  */
 import { eApgUtsSpecRun } from "./src/enums/eApgUtsSpecRun.ts";
-import { ApgUtsObjSpec } from "./test/src/ApgUtsObjSpec.ts";
+import { ApgUtsObjSpec } from "./test/specs/ApgUtsObjSpec.ts";
 
-export async function ApgUtsTests(arun: eApgUtsSpecRun) {
+async function ApgUtsTests(arun: eApgUtsSpecRun) {
 
     if (arun != eApgUtsSpecRun.yes) return;
 
