@@ -25,4 +25,8 @@ export class ApgUtsServer {
     console.log(`\n\n\n`);
   }
 
+  static IsDeploy() { 
+    return Deno.env.get('DENO_DEPLOYMENT_ID') != undefined;
+  }
+
 }
