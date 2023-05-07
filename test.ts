@@ -4,7 +4,8 @@
  * @version 0.9.2 [APG 2022/10/08] Github Beta
  * ------------------------------------------------------------------------
  */
-import { eApgUtsSpecRun } from "./src/enums/eApgUtsSpecRun.ts";
+import { eApgUtsSpecRun } from "./lib/enums/eApgUtsSpecRun.ts";
+import { ApgUtsMeasureUnitsSpec } from "./test/specs/ApgUtsMesureUnitsSpec.ts";
 import { ApgUtsObjSpec } from "./test/specs/ApgUtsObjSpec.ts";
 
 async function ApgUtsTests(arun: eApgUtsSpecRun) {
@@ -16,7 +17,11 @@ async function ApgUtsTests(arun: eApgUtsSpecRun) {
     
     const objSpec = new ApgUtsObjSpec();
     objSpec.specRunSync(eApgUtsSpecRun.yes);
-    const _r2 = await objSpec.sendToTestService(URI, "Uts", "ApgUtsObjSpec");
+    const _r1 = await objSpec.sendToTestService(URI, "Uts", "ApgUtsObjSpec");
+
+    const measureUnitSpec = new ApgUtsMeasureUnitsSpec();
+    measureUnitSpec.specRunSync(eApgUtsSpecRun.yes);
+    const _r2 = await measureUnitSpec.sendToTestService(URI, "Uts", "ApgUtsMeasureUnitsSpec");
 }
 
 await ApgUtsTests(eApgUtsSpecRun.yes);

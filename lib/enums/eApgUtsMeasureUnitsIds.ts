@@ -11,7 +11,7 @@
 export enum eApgUtsMeasureUnitsIds {
 
     undefined = "",
-    error = "e",
+    error = "err",
 
     // Weight units
     milligrams = 'mg', 
@@ -37,7 +37,7 @@ export enum eApgUtsMeasureUnitsIds {
     cubicMeters = 'm3',
 
     // Quantity units
-    pieces = 'pz',
+    pieces = 'pcs',
     pairs = 'pa',
     couples = 'cp',
     hundreds = 'h',

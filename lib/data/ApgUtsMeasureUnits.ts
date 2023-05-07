@@ -165,7 +165,7 @@ export const ApgUtsMeasureUnits: Record<eApgUtsMeasureUnitsIds | string, IApgUts
     {
         unit: eApgUtsMeasureUnitsIds.pairs,
         base: eApgUtsMeasureUnitsIds.pieces,
-        toBase: eApgUtsMagnitude.half,
+        toBase: eApgUtsMagnitude.double,
         type: eApgUtsMeasureUnitsTypes.secondary
     },
     [eApgUtsMeasureUnitsIds.hundreds]:

@@ -8,39 +8,45 @@
  * @version 0.9.7 [APG 2023/05/06] Separation of concerns lib/src
  * ------------------------------------------------------------------------
  */
-export * from './src/classes/ApgUtsDateTimeStamp.ts';
-export * from './src/classes/ApgUtsEnum.ts';
-export * from './src/classes/ApgUtsFs.ts';
-export * from './src/classes/ApgUtsIs.ts';
-export * from './src/classes/ApgUtsJsonFile.ts';
-export * from './src/classes/ApgUtsMap.ts';
-export * from './src/classes/ApgUtsMath.ts';
-export * from './src/classes/ApgUtsMeta.ts';
-export * from './src/classes/ApgUtsMetaUrl.ts';
-export * from './src/classes/ApgUtsObj.ts';
-export * from './src/classes/ApgUtsServer.ts';
-export * from './src/classes/ApgUtsSpecable.ts';
-export * from './src/classes/ApgUtsStr.ts';
 
-export { eApgUtsLogMode } from "./src/enums/eApgUtsLogMode.ts";
-export { eApgUtsSpecClause } from "./src/enums/eApgUtsSpecClause.ts";
-export { eApgUtsSpecRun } from "./src/enums/eApgUtsSpecRun.ts";
+export * from './lib/classes/ApgUtsDateTimeStamp.ts';
+export * from './lib/classes/ApgUtsEnum.ts';
+export * from './lib/classes/ApgUtsFs.ts';
+export * from './lib/classes/ApgUtsIs.ts';
+export * from './lib/classes/ApgUtsJsonFile.ts';
+export * from './lib/classes/ApgUtsMap.ts';
+export * from './lib/classes/ApgUtsMath.ts';
+export * from './lib/classes/ApgUtsMeasureUnitValue.ts';
+export * from './lib/classes/ApgUtsMeta.ts';
+export * from './lib/classes/ApgUtsMetaUrl.ts';
+export * from './lib/classes/ApgUtsObj.ts';
+export * from './lib/classes/ApgUtsServer.ts';
+export * from './lib/classes/ApgUtsSpecable.ts';
+export * from './lib/classes/ApgUtsStr.ts';
 
-export type { IApgUtsServerInfo } from './src/interfaces/IApgUtsServerInfo.ts';
-export type { IApgUtsSpecEvent } from './src/interfaces/IApgUtsSpecEvent.ts';
+
+export { eApgUtsLogMode } from "./lib/enums/eApgUtsLogMode.ts";
+export { eApgUtsMagnitude } from "./lib/enums/eApgUtsMagnitude.ts";
+export { eApgUtsMeasureUnitsIds } from "./lib/enums/eApgUtsMeasureUnitsIds.ts";
+export { eApgUtsMeasureUnitsTypes } from "./lib/enums/eApgUtsMeasureUnitsTypes.ts";
+export { eApgUtsSpecClause } from "./lib/enums/eApgUtsSpecClause.ts";
+export { eApgUtsSpecRun } from "./lib/enums/eApgUtsSpecRun.ts";
+
+
+export type { IApgUtsServerInfo } from './lib/interfaces/IApgUtsServerInfo.ts';
+export type { IApgUtsSpecEvent } from './lib/interfaces/IApgUtsSpecEvent.ts';
 export type {
     IApgUtsDevlog,
     IApgUtsDevlogDone,
     IApgUtsDevlogTodo
-} from './src/interfaces/IApgUtsDevlog.ts';
-
+} from './lib/interfaces/IApgUtsDevlog.ts';
 export type {
     IApgUtsHyperlink,
     IApgUtsHyperlinksGroup
-} from './src/interfaces/IApgUtsHyperlinks.ts';
+} from './lib/interfaces/IApgUtsHyperlinks.ts';
+export type { IApgUtsMeasureUnit } from './lib/interfaces/IApgUtsMeasureUnit.ts';
 
-export type { IApgUtsMeasureUnit } from './src/interfaces/IApgUtsMeasureUnit.ts';
 
 export type {
     TApgUtsInteger
-} from './src/types/ApgUtsTypes.ts'
+} from './lib/types/ApgUtsTypes.ts'

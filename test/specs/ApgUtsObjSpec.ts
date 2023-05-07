@@ -5,9 +5,9 @@
  * ------------------------------------------------------------------------
  */
 
-import { ApgUtsObj } from "../../src/classes/ApgUtsObj.ts";
-import { ApgUtsSpecable } from "../../src/classes/ApgUtsSpecable.ts";
-import { eApgUtsSpecRun } from "../../src/enums/eApgUtsSpecRun.ts";
+import { ApgUtsObj } from "../../lib/classes/ApgUtsObj.ts";
+import { ApgUtsSpecable } from "../../lib/classes/ApgUtsSpecable.ts";
+import { eApgUtsSpecRun } from "../../lib/enums/eApgUtsSpecRun.ts";
 
 export class ApgUtsObjSpec extends ApgUtsSpecable {
 
