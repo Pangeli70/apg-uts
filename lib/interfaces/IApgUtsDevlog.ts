@@ -6,8 +6,9 @@
  * -----------------------------------------------------------------------
 */
 
-
-/** Development Log Todo item: groups activities with a milestone title */
+/**
+ * Development Log Todo item: groups activities with a milestone title
+ */
 export interface IApgUtsDevlogTodo {
 
   /** Title or name of the group of the things to do */

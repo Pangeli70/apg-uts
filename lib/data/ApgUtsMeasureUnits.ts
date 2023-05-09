@@ -11,7 +11,7 @@ import { eApgUtsMeasureUnitsTypes } from "../enums/eApgUtsMeasureUnitsTypes.ts";
 import { eApgUtsMagnitude } from "../enums/eApgUtsMagnitude.ts";
 
 /**
- * Collection of predefined measure units definitions
+ * Collection of measure units definitions
  */
 export const ApgUtsMeasureUnits: Record<eApgUtsMeasureUnitsIds | string, IApgUtsMeasureUnit>= {
     [eApgUtsMeasureUnitsIds.undefined]:

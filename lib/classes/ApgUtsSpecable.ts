@@ -5,13 +5,13 @@
  * @version 0.9.2 [APG 2022/10/02] Github Beta
  * -----------------------------------------------------------------------
  */
-import { StdColors } from "../../deps.ts"
-import { ApgUtsMeta } from "./ApgUtsMeta.ts";
-import { ApgUtsObj } from "./ApgUtsObj.ts";
-import { eApgUtsSpecClause } from "../enums/eApgUtsSpecClause.ts"
+import { StdColors } from "../deps.ts"
 import { IApgUtsSpecEvent } from "../interfaces/IApgUtsSpecEvent.ts"
+import { eApgUtsSpecClause } from "../enums/eApgUtsSpecClause.ts"
 import { eApgUtsSpecRun } from "../enums/eApgUtsSpecRun.ts";
 import { eApgUtsLogMode } from "../enums/eApgUtsLogMode.ts";
+import { ApgUtsMeta } from "./ApgUtsMeta.ts";
+import { ApgUtsObj } from "./ApgUtsObj.ts";
 
 
 export abstract class ApgUtsSpecable extends ApgUtsMeta {
@@ -51,10 +51,17 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return this._events;
   }
 
+  /**
+   * Initialize the base object
+   * @param aimportMetaUrl A string coming from the statment import.meta.url
+   */
   constructor(aimportMetaUrl: string) {
     super(aimportMetaUrl);
   }
 
+  /**
+   * Declares the beginning of a set of specs for the current object 
+   */
   protected specTitle(atitle: string) {
     const spacer = ApgUtsSpecable.SPACER;
 
@@ -68,6 +75,10 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     console.log(message)
   }
 
+
+  /**
+   * Initializes the spec
+   */
   protected specInit(aname: string) {
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.init,
@@ -89,8 +100,12 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return r == eApgUtsSpecRun.yes;
   }
 
-  protected specWhen(acase: string) {
-    const message = "When " + acase + "...";
+
+  /**
+   * Spec definition: use this method to declare the current conditions
+   */
+  protected specWhen(aconditions: string) {
+    const message = "When " + aconditions + "...";
     this.#log("|   " + message);
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.when,
@@ -100,6 +115,10 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
+
+  /**
+   * Spec expectation: use this method to declare the expected result
+   */
   protected specWeExpect(aexpect: string) {
     const message = "We expect " + aexpect;
     this.#log("|   " + message);
@@ -111,6 +130,13 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
+  
+  /**
+   * Placeholder to trace specs skipping
+   * @param arun Flag that indicates that the spec will be skipped or not
+   * @param amessage Eventual message to justify why it was skipped
+   * @remarks This method should be private
+   */
   protected specSkip(arun: eApgUtsSpecRun, amessage = "") {
     if (arun == eApgUtsSpecRun.no) {
       let message = amessage;
@@ -133,10 +159,15 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return arun;
   }
 
-  protected specWeGot(aresult: string, ar: boolean) {
+  /**
+   * Spec result: use this method to record the test results
+   * @param aresult The value obtained testing the spec
+   * @param asuccess The flag that indicats if the test was successful
+   */
+  protected specWeGot(aresult: string, asuccess: boolean) {
     const message = "We got " + aresult
     let res = "";
-    if (ar === true) {
+    if (asuccess === true) {
 
       res = StdColors.green("       SUCCESS");
       this._successful++;
@@ -167,6 +198,12 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this.#log("|     " + message + "\n|" + res);
   }
 
+  /**
+   * Resume of the current results. 
+   * It is used to close a group of related spects started with the call to the specInit() method.
+   * It reports in a row the number of specs succesful, failed and skipped.
+   * The partial counters are reset.
+   */
   protected specResume() {
 
     const eventMessage = `Successful: ${this._successful}, Failed: ${this._failed}, Skipped: ${this._skipped}`;
@@ -194,6 +231,12 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     this._events.push(event);
   }
 
+  /**
+   * Resumes the results of all the specs till the call to the specTitle() method.
+   * It reports in a row the number of specs succesful, failed and skipped.
+   * It should be called after the last specResume() call
+   * The total counters are reset.
+   */
   protected specFinal() {
 
     const eventMessage = `Successful: ${ApgUtsSpecable._totalSuccessful}, Failed: ${ApgUtsSpecable._totalFailed}, Skipped: ${ApgUtsSpecable._totalSkipped}`;
@@ -216,7 +259,6 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     ApgUtsSpecable._totalSkipped = 0;
     ApgUtsSpecable._totalFailed = 0;
 
-
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.final,
       message: eventMessage,
@@ -227,16 +269,29 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return ApgUtsSpecable._totalFailed == 0;
   }
 
+
+  /**
+   * Method that will be overriden by the child classes to be called asyncronously.
+   */
   protected specExecute(): Promise<void> {
     return new Promise<void>(() => {
       throw new Error(`If you want to call method [${this.specExecute.name}] you must override the implementation.`)
     })
   }
 
+
+  /**
+   * Method that will be overriden by the child classes to be called syncronously.
+   */
   protected specExecuteSync(): void {
     throw new Error(`If you want to call method [${this.specExecuteSync.name}] method you must override the implementation.`)
   }
 
+
+  /**
+   * 
+   * @returns 
+   */
   protected specMockInit() {
     const event: IApgUtsSpecEvent = {
       clause: eApgUtsSpecClause.mockInit,
@@ -272,6 +327,8 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
 
     return event;
   }
+
+
 
   async specRun(arun: eApgUtsSpecRun) {
     this._run = arun;
@@ -437,7 +494,7 @@ export abstract class ApgUtsSpecable extends ApgUtsMeta {
     return a === b;
   }
 
-
+  
   protected areDeepEqual(a: any, b: any): boolean {
     return ApgUtsObj.DeepCompare(a, b);
   }

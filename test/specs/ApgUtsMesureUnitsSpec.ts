@@ -1,10 +1,10 @@
 /** -----------------------------------------------------------------------
  * @module [Uts/Test]
  * @author [APG] ANGELI Paolo Giusto
- * @version 0.9.2 [APG 2022/${V1}/08] Github Beta
+ * @version 0.9.2 [APG 2022/10/08] Github Beta
+ * @version 0.9.7 [APG 2023/05/06] Separation of concerns lib/src + Measure units
  * ------------------------------------------------------------------------
  */
-
 
 import { ApgUtsSpecable } from "../../lib/classes/ApgUtsSpecable.ts";
 import { eApgUtsSpecRun } from "../../lib/enums/eApgUtsSpecRun.ts";

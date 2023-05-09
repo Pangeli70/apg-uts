@@ -11,13 +11,19 @@
  * @version 0.9.3 [APG 2022/12/17] Lines max length and num lines
  * -----------------------------------------------------------------------
  */
+
+/**
+ * Some common string utilities
+ */
 export class ApgUtsStr {
+
 
   static Capitalize(astring: string) {
     // https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
     if (typeof astring !== 'string') { return ''; }
     return astring.charAt(0).toUpperCase() + astring.slice(1).toLowerCase();
   }
+
 
   static RandomNumbersAndLetters(alength: number): string {
 
@@ -30,6 +36,7 @@ export class ApgUtsStr {
     return r;
   }
 
+
   static RandomWithSymbols(alength: number): string {
 
     let r = '';
@@ -41,6 +48,13 @@ export class ApgUtsStr {
     return r;
   }
 
+  /**
+   * Prints a formatted string aligning the value in the middle of the available width
+   * @param avalue that has to be formatted
+   * @param awidth The total legnth of the output
+   * @param aborder Character or string used for the beginnig and ending the output
+   * @param afiller Character or string used to fill the space necessary to aligng the value
+   */
   static FilledCentered(avalue: string, awidth: number, aborder: string, afiller: string) {
     const borderW = aborder.length;
     if (afiller.length > 1)
@@ -57,6 +71,13 @@ export class ApgUtsStr {
     return r;
   }
 
+  /**
+   * Prints a formatted string aligning the value to the right of the available width
+   * @param avalue that has to be formatted
+   * @param awidth The total legnth of the output
+   * @param aborder Character or string used for the beginnig and ending the output
+   * @param afiller Character or string used to fill the space necessary to aligng the value
+   */
   static FilledRight(avalue: string, awidth: number, aborder: string, afiller: string) {
 
     const borderW = aborder.length;
@@ -72,8 +93,8 @@ export class ApgUtsStr {
   }
 
   /**
-   * @return {RegExp} Regular Expression per il pattern passato
-   * @param {string} afilter Pattern per il filtro es. 'start*', '*something', 'test*test', 'a*@*.com'
+   * Regular Expression for the passed filter
+   * @param {string} afilter Glob pattern for the filter es. 'start*', '*something', 'test*test', 'a*@*.com'
    */
   static RegExpFromFilter(afilter: string): RegExp {
 
@@ -146,6 +167,10 @@ export class ApgUtsStr {
     return r;
   }
 
+
+  /**
+   * Sanitize HTML text converting the characters that could create problems
+   */
   static EscapeHTML(ahtml: string) {
 
     return ahtml
@@ -156,7 +181,9 @@ export class ApgUtsStr {
       .replaceAll("'", '&#039;');
   }
 
-  /** Replaces invalid characters in urls with correct escape sequences */
+  /** 
+   * Replaces invalid characters in urls with correct escape sequences
+   */
   static Urlify(apath: string) {
     let r = apath;
     let i = 0;
@@ -181,7 +208,8 @@ export class ApgUtsStr {
     return r;
   }
 
-  /** Get the number of lines in a multiline text.
+  /**
+   * Get the number of lines in a multiline text.
    * Splits the argument using all possible combinations of \r and \n.
    */
   static LinesNum(amultiLineText: string) {
@@ -194,7 +222,8 @@ export class ApgUtsStr {
   }
 
 
-  /** Get the length of the longest line in a multiline text. 
+  /**
+   * Get the length of the longest line in a multiline text. 
    * Splits the argument using all possible combinations of \r and \n.
    */
   static LinesMaxLength(amultiLineText: string) {

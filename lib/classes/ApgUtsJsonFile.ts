@@ -12,7 +12,7 @@
  */
 
 
-import { StdPath } from "../../deps.ts";
+import { StdPath } from "../deps.ts";
 import { ApgUtsFs } from "./ApgUtsFs.ts"
 
 

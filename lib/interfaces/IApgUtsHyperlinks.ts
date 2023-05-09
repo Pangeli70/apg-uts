@@ -5,7 +5,9 @@
  * -----------------------------------------------------------------------
 */
 
-/** Data structure to hold fields for menus and lists of links */
+/** 
+ * Data structure to hold fields for menus and lists of links
+ */
 
 export interface IApgUtsHyperlink {
 

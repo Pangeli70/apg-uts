@@ -6,7 +6,9 @@
  * -----------------------------------------------------------------------
 */
 
-/** Brief set of data for Drash server startup and resume*/
+/** 
+ * Brief set of data for Drash server startup and resume
+ */
 export interface IApgUtsServerInfo {
   /** Name of the server */
   caption: string;

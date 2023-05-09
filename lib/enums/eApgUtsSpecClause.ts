@@ -5,6 +5,9 @@
  * -----------------------------------------------------------------------
 */
 
+/**
+ * List of clauses for spec events
+ */
 export enum eApgUtsSpecClause {
     title = "title",
     init = "init",

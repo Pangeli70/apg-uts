@@ -13,15 +13,14 @@ async function ApgUtsTests(arun: eApgUtsSpecRun) {
     if (arun != eApgUtsSpecRun.yes) return;
 
     const URI = "https://apg-tst.deno.dev/store";
-    // const URI = "http://localhost:49609/store";
     
     const objSpec = new ApgUtsObjSpec();
     objSpec.specRunSync(eApgUtsSpecRun.yes);
-    const _r1 = await objSpec.sendToTestService(URI, "Uts", "ApgUtsObjSpec");
+    const _r1 = await objSpec.sendToTestService(URI, "Uts", objSpec.CLASS_NAME);
 
     const measureUnitSpec = new ApgUtsMeasureUnitsSpec();
     measureUnitSpec.specRunSync(eApgUtsSpecRun.yes);
-    const _r2 = await measureUnitSpec.sendToTestService(URI, "Uts", "ApgUtsMeasureUnitsSpec");
+    const _r2 = await measureUnitSpec.sendToTestService(URI, "Uts", measureUnitSpec.CLASS_NAME);
 }
 
 await ApgUtsTests(eApgUtsSpecRun.yes);

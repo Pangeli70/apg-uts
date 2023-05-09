@@ -10,7 +10,7 @@
  * @version 0.9.1 [APG 2022/09/11] Github Beta
  * -----------------------------------------------------------------------
  */
-import { StdPath } from "../../deps.ts";
+import { StdPath } from "../deps.ts";
 
 
 export class ApgUtsFs {
