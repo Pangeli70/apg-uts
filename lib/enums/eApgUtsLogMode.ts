@@ -8,6 +8,10 @@
  * Modes for logging for ApgUtsSpecService console messages
  */
 export enum eApgUtsLogMode {
-    quiet = "quiet",
-    verbose = "verbose"
+    /** No logs */
+    silent = 0,
+    /** Some logs */
+    quiet = 1,
+    /** All logs */
+    verbose = 2
 }
