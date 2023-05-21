@@ -6,14 +6,14 @@
  * -----------------------------------------------------------------------
  */
 
-
-export type TApgUtilsMetaUrl = string;
-
+/**
+ * Utility to extract source file name from transpiler using import.meta.url
+ */
 export class ApgUtsMetaUrl {
 
     private _URL: URL;
     
-    constructor(aimportMetaUrl: TApgUtilsMetaUrl) { 
+    constructor(aimportMetaUrl: string) { 
         this._URL = new URL('', aimportMetaUrl);
     }
 

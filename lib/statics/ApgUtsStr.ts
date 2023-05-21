@@ -13,7 +13,7 @@
  */
 
 /**
- * Some common string utilities
+ * Common string utilities
  */
 export class ApgUtsStr {
 

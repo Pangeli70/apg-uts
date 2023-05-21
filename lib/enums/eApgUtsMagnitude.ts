@@ -6,7 +6,7 @@
  */
 
 /**
- * Magnitudes used as coefficents to convert values to different measure units
+ * Magnitudes used as coefficents to convert values to and from different measure units
  */
 export enum eApgUtsMagnitude {
   unity = 1,

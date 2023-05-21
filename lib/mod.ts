@@ -10,43 +10,27 @@
  */
 
 export * from './classes/ApgUtsDateTimeStamp.ts';
-export * from './classes/ApgUtsEnum.ts';
-export * from './classes/ApgUtsFs.ts';
-export * from './classes/ApgUtsIs.ts';
-export * from './classes/ApgUtsJsonFile.ts';
-export * from './classes/ApgUtsMap.ts';
-export * from './classes/ApgUtsMath.ts';
-export * from './classes/ApgUtsMeasureUnitValue.ts';
-export * from './classes/ApgUtsMeta.ts';
+
 export * from './classes/ApgUtsMetaUrl.ts';
-export * from './classes/ApgUtsObj.ts';
-export * from './classes/ApgUtsServer.ts';
-export * from './classes/ApgUtsSpecable.ts';
-export * from './classes/ApgUtsStr.ts';
 
 
-export { eApgUtsLogMode } from "./enums/eApgUtsLogMode.ts";
-export { eApgUtsMagnitude } from "./enums/eApgUtsMagnitude.ts";
-export { eApgUtsMeasureUnitsIds } from "./enums/eApgUtsMeasureUnitsIds.ts";
-export { eApgUtsMeasureUnitsTypes } from "./enums/eApgUtsMeasureUnitsTypes.ts";
-export { eApgUtsSpecClause } from "./enums/eApgUtsSpecClause.ts";
-export { eApgUtsSpecRun } from "./enums/eApgUtsSpecRun.ts";
+export * as Std from './deps/deno.land.std.ts';
 
+export * from "./enums/eApgUtsLogMode.ts";
+export * from "./enums/eApgUtsMagnitude.ts";
 
-export type { IApgUtsServerInfo } from './interfaces/IApgUtsServerInfo.ts';
-export type { IApgUtsSpecEvent } from './interfaces/IApgUtsSpecEvent.ts';
-export type {
-    IApgUtsDevlog,
-    IApgUtsDevlogDone,
-    IApgUtsDevlogTodo
-} from './interfaces/IApgUtsDevlog.ts';
-export type {
-    IApgUtsHyperlink,
-    IApgUtsHyperlinksGroup
-} from './interfaces/IApgUtsHyperlinks.ts';
-export type { IApgUtsMeasureUnit } from './interfaces/IApgUtsMeasureUnit.ts';
+export type { IApgUtsHyperlink, } from './interfaces/IApgUtsHyperlink.ts';
+export type { IApgUtsHyperlinksGroup } from './interfaces/IApgUtsHyperlinksGroup.ts';
 
+export * from './services/ApgUtsBaseService.ts';
 
-export type {
-    TApgUtsInteger
-} from './types/ApgUtsTypes.ts'
+export * from './statics/ApgUtsEnum.ts';
+export * from './statics/ApgUtsFs.ts';
+export * from './statics/ApgUtsIs.ts';
+export * from './statics/ApgUtsJsonFile.ts';
+export * from './statics/ApgUtsMap.ts';
+export * from './statics/ApgUtsMath.ts';
+export * from './statics/ApgUtsObj.ts';
+export * from './statics/ApgUtsStr.ts';
+
+export type { TApgUtsInteger } from './types/TApgUtsInteger.ts'

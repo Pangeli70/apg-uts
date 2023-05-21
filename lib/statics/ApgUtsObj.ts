@@ -13,7 +13,9 @@
  */
 import { ApgUtsMath } from "./ApgUtsMath.ts";
 
-
+/**
+ * Utility functions to deal with objects
+ */
 export class ApgUtsObj {
   
   static TypeOf(aunknown: unknown): string {

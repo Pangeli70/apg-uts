@@ -5,7 +5,7 @@
  * -----------------------------------------------------------------------
 */
 /**
- * Modes for logging for ApgUtsSpecable console messages
+ * Modes for logging for ApgUtsSpecService console messages
  */
 export enum eApgUtsLogMode {
     quiet = "quiet",

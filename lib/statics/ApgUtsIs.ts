@@ -11,6 +11,10 @@
  * @version 0.9.7 [APG 2023/05/06] Separation of concerns lib/src + Is Deploy
  * -----------------------------------------------------------------------
  */
+
+/**
+ * Utility functions to check if some conditions are met
+ */
 export class ApgUtsIs {
 
   static IsNumber(an: any): boolean {

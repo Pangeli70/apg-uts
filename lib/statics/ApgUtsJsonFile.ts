@@ -8,11 +8,11 @@
  * @version 0.7.1 [APG 2019/08/27]
  * @version 0.8.0 [APG 2022/03/19] Porting to Deno
  * @version 0.9.1 [APG 2022/09/11] Github Beta
+ * @version 0.9.7 [APG 2023/05/14] Separation of concerns srv/lib
  * -----------------------------------------------------------------------
  */
 
-
-import { StdPath } from "../deps.ts";
+import { Std } from "../deps.ts";
 import { ApgUtsFs } from "./ApgUtsFs.ts"
 
 
@@ -24,7 +24,7 @@ export class ApgUtsJsonFile {
 
   static ExistsSync(afile: string) {
 
-    const file = StdPath.normalize(afile);
+    const file = Std.Path.normalize(afile);
     return ApgUtsFs.FileExistsSync(file);
 
   }
@@ -32,7 +32,7 @@ export class ApgUtsJsonFile {
 
   static async Read(afile: string) {
 
-    const file = StdPath.normalize(afile);
+    const file = Std.Path.normalize(afile);
     let r: unknown = {};
 
     if (this.ExistsSync(file)) {
@@ -51,7 +51,7 @@ export class ApgUtsJsonFile {
   static async Write(adata: unknown, afile: string) {
 
     let r = "";
-    const file = StdPath.normalize(afile);
+    const file = Std.Path.normalize(afile);
 
     if (adata) {
       if (typeof (adata) == 'object' || Array.isArray(adata)) {

@@ -6,16 +6,19 @@
  * -----------------------------------------------------------------------
  */
 
+/**
+ * Custom Apg date time stamps. These are meant to be used as immutable identifiers 
+ */
 export class ApgUtsDateTimeStamp {
-    private _value;
 
+    private readonly _stamp: string;
 
-    constructor(aparam: string | Date) {
+    constructor(aparam: Date) {
         if (typeof aparam == 'string') {
-            this._value = aparam;
+            this._stamp = aparam;
         }
         else {
-            this._value = this.#value(aparam)
+            this._stamp = this.#value(aparam)
         }
     }
 
@@ -29,12 +32,12 @@ export class ApgUtsDateTimeStamp {
     }
 
     get Date() {
-        const splits = this._value.split('-');
+        const splits = this._stamp.split('-');
         const str = `${splits[0]}-${splits[1]}-${splits[2]}T${splits[3]}:${splits[4]}:${splits[5]}`;
         return new Date(str);
     }
 
-    get Value() {
-        return this._value;
+    get Stamp() {
+        return this._stamp;
     }
 }

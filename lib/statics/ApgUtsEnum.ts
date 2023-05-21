@@ -11,7 +11,12 @@
  * @version 0.9.1 [APG 2022/09/11] Github Beta
  * -----------------------------------------------------------------------
  */
+
+/**
+ * Some functions to get info from and do checks on enumerations
+ */
 export class ApgUtsEnum {
+
   static StringContains(aenum: any, avalue: string): boolean {
     return (Object.values(aenum).includes(avalue));
   }

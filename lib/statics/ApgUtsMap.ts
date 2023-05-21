@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 /** -----------------------------------------------------------------------
  * @module [apg-uts]
  * @author [APG] ANGELI Paolo Giusto
@@ -10,6 +9,10 @@
  * @version 0.9.0 [APG 2022/09/10] Split in several module + Escape Html
  * @version 0.9.1 [APG 2022/09/11] Github Beta
  * -----------------------------------------------------------------------
+ */
+
+/**
+ * Utilities to work with Maps
  */
 export class ApgUtsMap {
 

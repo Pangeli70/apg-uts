@@ -8,12 +8,18 @@
  * @version 0.8.0 [APG 2022/05/01] Refactoring names
  * @version 0.9.0 [APG 2022/09/10] Split in several module + Escape Html
  * @version 0.9.1 [APG 2022/09/11] Github Beta
+ * @version 0.9.7 [APG 2023/05/14] Separation of concerns srv/lib
  * -----------------------------------------------------------------------
  */
-import { StdPath } from "../deps.ts";
+import { Std } from "../deps.ts";
 
-
+/**
+ * File system utility functions not very useful on Deploy now indeed
+ */
 export class ApgUtsFs {
+
+  // TODO make this stuff be compatible with deno deploy
+
   static FolderExistsSync(apath: string): boolean {
     let r = false;
     try {
@@ -34,7 +40,7 @@ export class ApgUtsFs {
 
   static FolderOfFileExistsSync(afile: string): boolean {
     let r = false;
-    const path = StdPath.dirname(afile);
+    const path = Std.Path.dirname(afile);
     try {
       const fileInfo = Deno.statSync(path);
       r = fileInfo.isDirectory;
@@ -98,7 +104,7 @@ export class ApgUtsFs {
 
     const filteredEntries = (aext === "*") ?
       entries :
-      entries.filter((a: string) => StdPath.extname(a) === aext);
+      entries.filter((a: string) => Std.Path.extname(a) === aext);
 
 
     const sortedEntries = filteredEntries
