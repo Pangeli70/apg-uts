@@ -10,9 +10,7 @@
  */
 
 export * from './classes/ApgUtsDateTimeStamp.ts';
-
 export * from './classes/ApgUtsMetaUrl.ts';
-
 
 export * as Std from './deps/deno.land.std.ts';
 
